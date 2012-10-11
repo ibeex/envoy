@@ -13,6 +13,7 @@ import shlex
 import signal
 import subprocess
 import threading
+import itertools
 
 
 __version__ = '0.0.2'
@@ -174,8 +175,8 @@ def expand_args(command):
     # Prepare arguments.
     if isinstance(command, str):
         splitter = shlex.shlex(command)
-        splitter.whitespace = '|'
         splitter.whitespace_split = True
+        splitter.commenters = ''
         command = []
 
         while True:
@@ -185,7 +186,11 @@ def expand_args(command):
             else:
                 break
 
+        # http://stackoverflow.com/questions/6164313/make-python-sublists-from-a-list-using-a-seperator
+        command = [list(x[1]) for x in itertools.groupby(command, lambda x: x == '|') if not x[0]]
+        command = [' '.join(x) for x in command]
         command = list(map(shlex.split, command))
+        print command
 
     return command
 

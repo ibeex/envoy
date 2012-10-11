@@ -24,6 +24,17 @@ class SimpleTest(unittest.TestCase):
         self.assertEqual(r.std_out.rstrip(), sentinel)
         self.assertEqual(r.status_code, 0)
 
+    def test_quoted_args1(self):
+        sentinel = '#quoted_args' * 3
+        r = envoy.run("python -c 'print \"%s\"'" % sentinel)
+        self.assertEqual(r.std_out.rstrip(), sentinel)
+        self.assertEqual(r.status_code, 0)
+
+    def test_quoted_args2(self):
+        sentinel = 'quoted | args' * 3
+        r = envoy.run("python -c 'print \"%s\"'" % sentinel)
+        self.assertEqual(r.std_out.rstrip(), sentinel)
+        self.assertEqual(r.status_code, 0)
 class ConnectedCommandTests(unittest.TestCase):
 
     def test_status_code(self):
