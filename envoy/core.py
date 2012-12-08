@@ -190,7 +190,6 @@ def expand_args(command):
         command = [list(x[1]) for x in itertools.groupby(command, lambda x: x == '|') if not x[0]]
         command = [' '.join(x) for x in command]
         command = list(map(shlex.split, command))
-        print command
 
     return command
 
